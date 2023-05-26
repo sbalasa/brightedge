@@ -74,15 +74,9 @@ class BrightEdgeSpider(scrapy.Spider):
         self.start_urls = urls
 
     def start_requests(self):
-        # Set User-Agent header
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-            "Cookie": "accept-cookies=yes"
-        }
-
-        # Send requests with headers
+        # Send requests without setting headers (Scrapy settings will be used)
         for url in self.start_urls:
-            yield scrapy.Request(url=url, headers=headers, callback=self.parse)
+            yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         """
