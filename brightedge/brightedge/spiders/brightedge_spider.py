@@ -1,10 +1,13 @@
 import os
 import scrapy
 import configparser
+import logging
 from pprint import pprint
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
 
 
 class Parser:
@@ -73,10 +76,13 @@ class BrightEdgeSpider(scrapy.Spider):
 
         self.start_urls = urls
 
+        # Define the number of topics for topic modeling
+        self.num_topics = 25
+
     def start_requests(self):
         # Send requests without setting headers (Scrapy settings will be used)
         for url in self.start_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.Request(url=url, callback=self.parse, errback=self.handle_failure)
 
     def parse(self, response):
         """
@@ -88,9 +94,46 @@ class BrightEdgeSpider(scrapy.Spider):
         # Exception handling block
         try:
             result = self.parser.parse(response)
+            tokens = result["tokens"]
+
+            # Perform topic modeling using Scikit-learn
+            text = " ".join(tokens)
+            vectorizer = CountVectorizer()
+            X = vectorizer.fit_transform([text])
+
+            lda_model = LatentDirichletAllocation(
+                n_components=self.num_topics, random_state=0
+            )
+            lda_model.fit(X)
+
+            # Get the most relevant topics
+            topics = []
+            feature_names = vectorizer.get_feature_names_out()
+            for topic_idx, topic in enumerate(lda_model.components_):
+                top_features_ind = topic.argsort()[:-6:-1]
+                topic_words = [feature_names[i] for i in top_features_ind]
+                topics.append(topic_words)
+
+            # Add topics to the result
+            result["topics"] = topics
+
             pprint(result, indent=4)  # Print the result using pprint
             yield result
         except Exception as e:
-            self.log(
-                f"Error parsing {response.url}: {e}", level=scrapy.log.ERROR
-            )
+            logging.error(f"Error parsing {response.url}: {e}")
+
+    def handle_failure(self, failure):
+        # Extract the URL from the failure
+        url = failure.request.url
+
+        # Extract the reason for failure
+        reason = str(failure.value)
+
+        # Create a dictionary with URL and reason
+        failure_info = {"url": url, "failure_reason": reason}
+
+        # Print the failure information
+        pprint(failure_info, indent=4)
+
+        # Yield the failure information as the result
+        yield failure_info
