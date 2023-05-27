@@ -33,3 +33,6 @@ The following steps can be taken to ensure these aspects:
 10. **APIs and Web Services**: If the website provides an API, it would be more efficient and respectful to use that instead of scraping. Always check if the website provides a public API or if there are any commercial services available that provide the data we need.
 
 This plan provides a scalable, reliable, and high-performing architecture for operationalizing the collection of millions of URLs. However, the specifics will depend on the exact requirements, budget, infrastructure, and other factors related to our project.
+
+
+![Architecture](Distributed_Web_Scraper.jpg)
