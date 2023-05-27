@@ -1,11 +1,11 @@
 import os
+import re
 import nltk
 import scrapy
 import logging
 import configparser
 
 
-from pprint import pprint
 from nltk.corpus import stopwords
 from sklearn.decomposition import NMF
 from nltk.tokenize import word_tokenize
@@ -36,6 +36,18 @@ class Parser:
 class DefaultParser(Parser):
     """Default parser, tokenizes text, lemmatizes and removes stopwords."""
 
+    def clean_text(self, text):
+        # Remove HTML entities
+        text = re.sub(r"&[a-z]+;", " ", text)
+
+        # Remove non-alphanumeric characters
+        text = re.sub(r"\W", " ", text)
+
+        # Replace multiple spaces with a single space
+        text = re.sub(r"\s+", " ", text)
+
+        return text
+
     def parse(self, response):
         """
         Parse the given response, tokenize the text and remove stopwords.
@@ -51,6 +63,9 @@ class DefaultParser(Parser):
 
         # Find all paragraph tags and extract the text
         text = " ".join(response.css("p::text").getall())
+
+        # Clean the text
+        text = self.clean_text(text)
 
         # Tokenize the text (split it into individual words)
         tokens = word_tokenize(text)
@@ -126,8 +141,6 @@ class BrightEdgeSpider(scrapy.Spider):
 
             # Add topics to the result
             result["topics"] = topics
-
-            pprint(result, indent=4)  # Print the result using pprint
             yield result
         except Exception as e:
             logging.error(f"Error parsing {response.url}: {e}")
@@ -141,9 +154,6 @@ class BrightEdgeSpider(scrapy.Spider):
 
         # Create a dictionary with URL and reason
         failure_info = {"url": url, "failure_reason": reason}
-
-        # Print the failure information
-        pprint(failure_info, indent=4)
 
         # Yield the failure information as the result
         yield failure_info
