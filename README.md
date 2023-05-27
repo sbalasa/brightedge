@@ -24,3 +24,6 @@ scrapy crawl brightedge -o output.json
 black -l 80 output.json
 cat output.json
 ```
+### To View Enhancement Design
+
+[Design Documentation](Design.md)
