@@ -6,7 +6,9 @@
 import scrapy
 
 
-class BrightedgeItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class BrightedgespiderItem(scrapy.Item):
+    # Define the fields for your item here like:
+    url = scrapy.Field()
+    tokens = scrapy.Field()
+    topics = scrapy.Field()
+    failure_reason = scrapy.Field()
