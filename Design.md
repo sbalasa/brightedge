@@ -34,5 +34,6 @@ The following steps can be taken to ensure these aspects:
 
 This plan provides a scalable, reliable, and high-performing architecture for operationalizing the collection of millions of URLs. However, the specifics will depend on the exact requirements, budget, infrastructure, and other factors related to our project.
 
+### Architecture Blueprint
 
 ![Architecture](Distributed_Web_Scraper.jpg)
