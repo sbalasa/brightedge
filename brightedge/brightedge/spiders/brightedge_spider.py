@@ -1,13 +1,20 @@
 import os
+import nltk
 import scrapy
-import configparser
 import logging
-from pprint import pprint
+import configparser
 
+
+from pprint import pprint
 from nltk.corpus import stopwords
+from sklearn.decomposition import NMF
 from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
+from nltk.stem import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("wordnet")
 
 
 class Parser:
@@ -27,7 +34,7 @@ class Parser:
 
 
 class DefaultParser(Parser):
-    """Default parser, tokenizes text and removes stopwords."""
+    """Default parser, tokenizes text, lemmatizes and removes stopwords."""
 
     def parse(self, response):
         """
@@ -48,9 +55,12 @@ class DefaultParser(Parser):
         # Tokenize the text (split it into individual words)
         tokens = word_tokenize(text)
 
-        # Remove the stopwords
+        # Lemmatize and remove the stopwords
+        lemmatizer = WordNetLemmatizer()
         filtered_tokens = [
-            word for word in tokens if word.casefold() not in stop_words
+            lemmatizer.lemmatize(word)
+            for word in tokens
+            if word.casefold() not in stop_words
         ]
 
         # Create dictionary with URL and filtered tokens
@@ -82,7 +92,9 @@ class BrightEdgeSpider(scrapy.Spider):
     def start_requests(self):
         # Send requests without setting headers (Scrapy settings will be used)
         for url in self.start_urls:
-            yield scrapy.Request(url=url, callback=self.parse, errback=self.handle_failure)
+            yield scrapy.Request(
+                url=url, callback=self.parse, errback=self.handle_failure
+            )
 
     def parse(self, response):
         """
@@ -98,18 +110,16 @@ class BrightEdgeSpider(scrapy.Spider):
 
             # Perform topic modeling using Scikit-learn
             text = " ".join(tokens)
-            vectorizer = CountVectorizer()
-            X = vectorizer.fit_transform([text])
+            vectorizer = TfidfVectorizer(max_df=0.95, min_df=2)
+            X = vectorizer.fit_transform(tokens)
 
-            lda_model = LatentDirichletAllocation(
-                n_components=self.num_topics, random_state=0
-            )
-            lda_model.fit(X)
+            nmf_model = NMF(n_components=self.num_topics, random_state=0)
+            nmf_model.fit(X)
 
             # Get the most relevant topics
             topics = []
             feature_names = vectorizer.get_feature_names_out()
-            for topic_idx, topic in enumerate(lda_model.components_):
+            for topic_idx, topic in enumerate(nmf_model.components_):
                 top_features_ind = topic.argsort()[:-6:-1]
                 topic_words = [feature_names[i] for i in top_features_ind]
                 topics.append(topic_words)
