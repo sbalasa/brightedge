@@ -33,6 +33,11 @@ scrapy crawl brightedge -o output.json
 black -l 80 output.json
 cat output.json
 ```
+
+### To View Implementation
+
+Please see the [Implementation Document](Implementation.md)
+
 ### To View Enhancement Design
 
 For more details about the design and enhancement of this spider, please see the [Design Documentation](Design.md)
