@@ -2,7 +2,7 @@
 
 The provided code performs web scraping on specific URLs, extracts text content, tokenizes, and lemmatizes the words. It then uses NMF (Non-negative Matrix Factorization) for topic modeling to identify key topics within the scraped content. 
 
-To operationalize this process for millions of URLs, you will need to take into consideration three major aspects:
+To operationalize this process for millions of URLs, we will need to take into consideration three major aspects:
 
 1. **Scalability**: How the solution will handle a high volume of URLs.
 
@@ -46,9 +46,9 @@ Scrapy is a popular, powerful, and versatile Python framework for web scraping a
 
 2. **Middleware and Extensions Support**: Scrapy supports a large number of middlewares and extensions, and allows the development of custom ones.
 
-3. **Handling of Request/Responses**: Scrapy handles the requests and responses in a very organized way, allowing you to apply pre-processing steps on the responses and handle different error codes without breaking the spider.
+3. **Handling of Request/Responses**: Scrapy handles the requests and responses in a very organized way, allowing us to apply pre-processing steps on the responses and handle different error codes without breaking the spider.
 
-4. **Item Pipelines**: Scrapy provides the ability to write pipelines, where you can manipulate the data, validate it, and even store it in any storage system (Database, File, Cloud Storage etc.).
+4. **Item Pipelines**: Scrapy provides the ability to write pipelines, where we can manipulate the data, validate it, and even store it in any storage system (Database, File, Cloud Storage etc.).
 
 5. **Built-in Support for Selecting and Extracting Data**: Scrapy comes with built-in support for selecting and extracting data from sources either by XPath or CSS expressions.
 
@@ -61,19 +61,19 @@ So, for tasks involving web scraping, Scrapy is often a top choice due to these 
 
 ### Why Scrapy Cluster ?
 
-Scrapy Cluster is an extension of the Scrapy framework that allows for a distributed, horizontal scaling architecture, which is beneficial for large-scale web crawling or web scraping projects. Here are a few reasons why you might want to use Scrapy Cluster:
+Scrapy Cluster is an extension of the Scrapy framework that allows for a distributed, horizontal scaling architecture, which is beneficial for large-scale web crawling or web scraping projects. Here are a few reasons why we might want to use Scrapy Cluster:
 
 1. **Distributed Crawling**: Scrapy Cluster allows for distributed crawling, meaning that it can manage multiple Scrapy spiders spread across many machines. This makes it much more efficient at gathering data from a large number of websites or pages in a shorter amount of time.
 
-2. **Real-time Crawling**: Scrapy Cluster supports real-time crawling. You can add a new crawl request to the cluster and it will be immediately acted upon, rather than having to wait for all existing tasks to complete.
+2. **Real-time Crawling**: Scrapy Cluster supports real-time crawling. We can add a new crawl request to the cluster and it will be immediately acted upon, rather than having to wait for all existing tasks to complete.
 
 3. **Failover Handling**: Scrapy Cluster has built-in failover handling. If a spider or a machine fails, the work can be immediately reassigned to another spider or machine, thus ensuring that no data is lost.
 
-4. **Scaling**: Scrapy Cluster supports horizontal scaling. You can add more machines to the cluster to handle increased load, and remove machines when they are no longer needed.
+4. **Scaling**: Scrapy Cluster supports horizontal scaling. we can add more machines to the cluster to handle increased load, and remove machines when they are no longer needed.
 
-5. **Throttling and Politeness**: Scrapy Cluster respects the rules of web crawling and ensures that your spiders do not overload any single website with too many requests.
+5. **Throttling and Politeness**: Scrapy Cluster respects the rules of web crawling and ensures that our spiders do not overload any single website with too many requests.
 
 6. **Collaborative Crawling**: Because Scrapy Cluster uses a shared queue for URLs to be crawled, it can avoid the issue of multiple spiders crawling the same page.
 
-Scrapy Cluster is a great tool when you have a large amount of data to scrape, and you need a solution that can scale easily to meet demand. It's also useful when you need to spread the load of your scraping across multiple machines, or when you want to add or remove spiders on the fly.
+Scrapy Cluster is a great tool when we have a large amount of data to scrape, and we need a solution that can scale easily to meet demand. It's also useful when we need to spread the load of our scraping across multiple machines, or when we want to add or remove spiders on the fly.
 
