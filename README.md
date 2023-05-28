@@ -14,7 +14,7 @@ This spider is capable of handling multiple URLs at a time and returning detaile
 pip3 install -r requirements.txt
 ```
 
-## To Add URL's
+### To Add URL's
 
 ```
 vim urls.txt
