@@ -3,7 +3,6 @@ import re
 import nltk
 import scrapy
 import logging
-import configparser
 
 
 from nltk.corpus import stopwords
@@ -15,6 +14,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 nltk.download("punkt")
 nltk.download("stopwords")
 nltk.download("wordnet")
+
+# Global
+URLS_FILE = "urls.txt"
 
 
 class Parser:
@@ -89,17 +91,9 @@ class BrightEdgeSpider(scrapy.Spider):
         super(BrightEdgeSpider, self).__init__(*args, **kwargs)
         self.parser = DefaultParser()  # Use the default parser
 
-        # Read URLs from configuration file
-        config = configparser.ConfigParser()
-        config.read("scrapy.cfg")
-
-        urls = [
-            config.get("urls", "url1"),
-            config.get("urls", "url2"),
-            config.get("urls", "url3"),
-        ]
-
-        self.start_urls = urls
+        # Read URLs from a text file
+        with open(URLS_FILE, "r") as f:
+            self.start_urls = [line.strip() for line in f]
 
         # Define the number of topics for topic modeling
         self.num_topics = 25
