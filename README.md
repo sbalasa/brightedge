@@ -34,6 +34,13 @@ black -l 80 output.json
 cat output.json
 ```
 
+### To Run via Docker
+
+```
+docker build -t brightedge .
+docker run -v "$(pwd)/brightedge/urls.txt:/app/brightedge/urls.txt" -v "$(pwd)/brightedge/output.json:/app/brightedge/output.json" brightedge
+```
+
 ### To Test
 
 ```
