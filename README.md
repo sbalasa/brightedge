@@ -15,6 +15,7 @@ pip3 install -r requirements.txt
 ### To Run
 
 ```
+cd brightedge
 scrapy crawl brightedge -o output.json 
 ```
 
