@@ -2,3 +2,4 @@ Scrapy==2.9.0
 nltk==3.8.1
 black==23.3.0
 scikit-learn==1.2.2
+pytest==7.3.1

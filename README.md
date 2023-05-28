@@ -34,6 +34,12 @@ black -l 80 output.json
 cat output.json
 ```
 
+### To Test
+
+```
+pytest brightedge/spiders/tests
+```
+
 ### To View Implementation
 
 Please see the [Implementation Document](Implementation.md)
