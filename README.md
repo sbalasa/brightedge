@@ -1,10 +1,12 @@
 # BrightEdge
 
-This is a Scrapy spider for web scraping using the BrightEdgeSpider class.
+This is a Scrapy spider named BrightEdgeSpider that performs advanced natural language processing on web pages.
 
 ## Description
 
-The BrightEdgeSpider is a web scraping spider built with Scrapy. It extracts text from web pages, tokenizes the text, and removes stopwords.
+BrightEdgeSpider is a powerful web scraper that doesn't just extract text, but also cleans, tokenizes, and lemmatizes it. It uses Natural Language Toolkit (NLTK) and Scikit-Learn for natural language processing, removing stopwords, lemmatizing words, and performing topic modeling using Non-negative Matrix Factorization (NMF).
+
+This spider is capable of handling multiple URLs at a time and returning detailed analysis for each page, including the most relevant topics based on the page's content.
 
 ### To Install
 
@@ -27,4 +29,4 @@ cat output.json
 ```
 ### To View Enhancement Design
 
-[Design Documentation](Design.md)
+For more details about the design and enhancement of this spider, please see the [Design Documentation](Design.md)
